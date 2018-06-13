@@ -40,8 +40,7 @@ public class BlurView extends View {
     }
     Paint paint;
     private void init(){
-        image=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.image));
-//        image=Bitmap.createBitmap(1000,1000, Bitmap.Config.ARGB_8888);
+        image=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.autumn));
         setLayerType(LAYER_TYPE_SOFTWARE,null);
         paint=new Paint();
         tranformMatrix=new Matrix();

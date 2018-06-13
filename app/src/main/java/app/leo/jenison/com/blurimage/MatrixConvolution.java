@@ -72,6 +72,7 @@ public class MatrixConvolution {
                 }
                 blurBitmap.setPixel(i,j,Color.argb(Color.alpha(pixel),factorR,factorG,factorB));
             }
+            Log.e("x"," "+i);
         }
         Log.e("ended"," ");
         return blurBitmap;

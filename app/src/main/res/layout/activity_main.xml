@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark"
-        />
     <app.leo.jenison.com.blurimage.BlurView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

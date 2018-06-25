@@ -7,6 +7,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -16,9 +17,6 @@ import android.view.View;
 import static android.graphics.Paint.Style.FILL;
 
 public class BlurView extends View {
-    private Matrix tranformMatrix;
-    private BitmapShader shader;
-    private Bitmap image;
 
     public BlurView(Context context) {
         super(context);
@@ -34,25 +32,42 @@ public class BlurView extends View {
         super(context, attrs, defStyleAttr);
         init();
     }
-    Paint paint;
+    Paint originalPaint;
+    Paint blurPaint;
+    Rect originalRect;
+    Rect blurRect;
     private void init(){
-        image=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.autumn));
         setLayerType(LAYER_TYPE_SOFTWARE,null);
-        paint=new Paint();
-        tranformMatrix=new Matrix();
-        shader=new BitmapShader(image, Shader.TileMode.CLAMP,Shader.TileMode.CLAMP);
+        Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.autumn);
+        Bitmap blurImage=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.autumn),MatrixConvolution.getGaussianKernel(5, 15));
+        originalPaint=new Paint();
+        blurPaint=new Paint();
+        originalRect=new Rect(0,0, blurImage.getWidth(), blurImage.getHeight());
+        blurRect=new Rect(blurImage.getWidth(),0, blurImage.getWidth()*2, blurImage.getHeight());
+
+        Matrix tranformMatrix = new Matrix();
+        BitmapShader shader = new BitmapShader(originalImage, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        originalPaint.setStyle(FILL);
+        originalPaint.setDither(true);
+        originalPaint.setAntiAlias(true);
+        shader.setLocalMatrix(tranformMatrix);
+        originalPaint.setShader(shader);
+
+        Matrix blurTranformMatrix = new Matrix();
+        blurTranformMatrix.postTranslate(originalImage.getWidth(),0);
+        BitmapShader blurShader = new BitmapShader(blurImage, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        blurPaint.setStyle(FILL);
+        blurPaint.setDither(true);
+        blurPaint.setAntiAlias(true);
+        blurShader.setLocalMatrix(blurTranformMatrix);
+        blurPaint.setShader(blurShader);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        paint.setStyle(FILL);
-        paint.setDither(true);
-        paint.setAntiAlias(true);
-        Log.e("measured"," "+getMeasuredWidth());
-        float x = 1000 /(float) image.getWidth();
-        float y = 1000/(float) image.getHeight();
-        shader.setLocalMatrix(tranformMatrix);
-        paint.setShader(shader);
-        canvas.drawPaint(paint);
+        canvas.drawRect(originalRect,originalPaint);
+        canvas.drawRect(blurRect,blurPaint);
     }
+
 }

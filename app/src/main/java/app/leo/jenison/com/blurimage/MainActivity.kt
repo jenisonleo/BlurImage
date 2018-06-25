@@ -1,6 +1,5 @@
 package app.leo.jenison.com.blurimage
 
-import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
@@ -8,7 +7,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        MatrixConvolution.makeKernel(1f)
         setContentView(R.layout.activity_main)
     }
 }

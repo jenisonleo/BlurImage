@@ -18,6 +18,17 @@ import static android.graphics.Paint.Style.FILL;
 
 public class BlurView extends View {
 
+
+    /**
+     * @SIGMA  is the radius of blur
+     */
+    public static final int SIGMA=5;
+    /**
+     * @N_TAP id the normalization matix's length
+     */
+    public static final int N_TAP=15;
+
+
     public BlurView(Context context) {
         super(context);
         init();
@@ -39,7 +50,7 @@ public class BlurView extends View {
     private void init(){
         setLayerType(LAYER_TYPE_SOFTWARE,null);
         Bitmap originalImage = BitmapFactory.decodeResource(getResources(), R.drawable.autumn);
-        Bitmap blurImage=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.autumn),MatrixConvolution.getGaussianKernel(5, 15));
+        Bitmap blurImage=MatrixConvolution.generateBlurImage(BitmapFactory.decodeResource(getResources(), R.drawable.autumn),MatrixConvolution.getGaussianKernel(SIGMA, N_TAP));
         originalPaint=new Paint();
         blurPaint=new Paint();
         originalRect=new Rect(0,0, blurImage.getWidth(), blurImage.getHeight());
